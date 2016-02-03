@@ -1,7 +1,6 @@
 Countries = new Mongo.Collection("prevCountries");
 
 if (Meteor.isClient) {
-  // counter starts at 0
 
   Template.body.helpers({
     countries: function () {
@@ -34,22 +33,12 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.countryName.events({
-    // temporary.
-    "click .delete": function () {
-      Countries.remove(this._id);
-    }
-  });
-
-  // Meteor.call('getDiseases', function(error, results) {
-  //   if (error) {
-  //     console.log("error: " + error);
-  //   } 
-
-  //   console.log(results);
-  //   Session.set("diseases", results);
-
+  // Template.countryName.events({
+  //   "click .delete": function () {
+  //     Countries.remove(this._id);
+  //   }
   // });
+
 
   Template.diseases.helpers({
     rant: function() {

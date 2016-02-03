@@ -17,6 +17,7 @@
         <input type="text" name="text" class="form-control" placeholder="Enter a 3 letter Country Code (ex. AUS)" />
       </div>
     </form>
+    
     <h3>History</h3>
     <ul>
       {{#each countries}}
@@ -24,13 +25,13 @@
       {{/each}}
     </ul>
 
+    <h3>Search Results:</h3>
     {{> diseases}}
   </div>
 
 </body>
 
 <template name="diseases">
-  <h3>Search Results:</h3>
   <ul>
     {{ #each rant }}
       {{> date }}
@@ -47,8 +48,8 @@
 </template>
 <!--  -->
 <template name="countryName">
-  <li class="{{#if checked}}checked{{/if}}">
-    <button class="delete">&times;</button>
+  <li>
+    <!-- <button class="delete">&times;</button> -->
  
     <span class="text">{{text}}</span>
   </li>
