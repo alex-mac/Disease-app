@@ -20,7 +20,6 @@ if (Meteor.isClient) {
  
       e.target.text.value = "";
 
-      console.log(text)
       Meteor.call('getDiseases', text, function(error, results) {
         if (error) {
           console.log("error: " + error);
@@ -33,6 +32,30 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.countryName.events({
+    "click .text": function() {
+      // console.log(this.text)
+      text = this.text
+
+      // gets Search Results
+      Meteor.call('getDiseases', text, function(error, results) {
+        if (error) {
+          console.log("error: " + error);
+        } 
+
+        Session.set("diseases", results);
+
+      });
+
+      
+      // updates position in database (WIP)
+      Countries.find({_id: this._id}, function(err, data) {
+        if (err) console.log(err)
+      }).update({createdAt: new Date});
+    }
+  });
+  
+  // delete history
   // Template.countryName.events({
   //   "click .delete": function () {
   //     Countries.remove(this._id);
@@ -67,7 +90,7 @@ if (Meteor.isServer) {
               {
                 date: $(".col_2-1_1 li:nth-child(" + i + ") a").text(),
                 description: $(".col_2-1_1 li:nth-child(" + i + ") span").text(),
-                link: $(".col_2-1_1 li:nth-child(" + i + ") a").attr("href")
+                link: "http://www.who.int/" + $(".col_2-1_1 li:nth-child(" + i + ") a").attr("href")
               }
             );
           }

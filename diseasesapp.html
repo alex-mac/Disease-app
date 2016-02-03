@@ -19,13 +19,13 @@
     </form>
     
     <h3>History</h3>
-    <ul>
+    <ul class="history">
       {{#each countries}}
         {{> countryName}}
       {{/each}}
     </ul>
 
-    <h3>Search Results:</h3>
+    <h3> Current Search Results:</h3>
     {{> diseases}}
   </div>
 
@@ -51,6 +51,6 @@
   <li>
     <!-- <button class="delete">&times;</button> -->
  
-    <span class="text">{{text}}</span>
+    <a><span class="text">{{text}}</span></a>
   </li>
 </template>
