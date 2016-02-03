@@ -1,15 +1,36 @@
 <head>
   <title>diseasesapp</title>
+  <!-- Latest compiled and minified CSS & JS -->
+  <link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <script src="//code.jquery.com/jquery.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-  <h1>Diseases App</h1>
+  <div class="container">
+    <h1>Diseases App</h1>
 
-  {{> diseases}}
+    <h3>Which Country To Search?</h3>
+
+    <form class="new-search">
+      <div class="form-group">
+        <input type="text" name="text" class="form-control" placeholder="Enter a 3 letter Country Code (ex. AUS)" />
+      </div>
+    </form>
+    <h3>History</h3>
+    <ul>
+      {{#each countries}}
+        {{> countryName}}
+      {{/each}}
+    </ul>
+
+    {{> diseases}}
+  </div>
+
 </body>
 
 <template name="diseases">
-  <h1>Rant!</h1>
+  <h3>Search Results:</h3>
   <ul>
     {{ #each rant }}
       {{> date }}
@@ -18,7 +39,17 @@
 </template>
 
 <template name="date">
-  <li >
-    {{ date }}, {{ description }}
+  <li>
+    <a href="{{link}}">{{ date }}</a><br />
+    <br /> 
+    {{ description }}
+  </li>
+</template>
+<!--  -->
+<template name="countryName">
+  <li class="{{#if checked}}checked{{/if}}">
+    <button class="delete">&times;</button>
+ 
+    <span class="text">{{text}}</span>
   </li>
 </template>

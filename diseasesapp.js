@@ -1,14 +1,55 @@
+Countries = new Mongo.Collection("prevCountries");
+
 if (Meteor.isClient) {
   // counter starts at 0
-  Meteor.call('getDiseases', function(error, results) {
-    if (error) {
-      console.log("error: " + error);
-    } 
 
-    console.log(results);
-    Session.set("diseases", results);
-
+  Template.body.helpers({
+    countries: function () {
+      return Countries.find({}, {sort: {createdAt: -1}, limit: 5});
+    }
   });
+
+  Template.body.events({
+    "submit .new-search": function (e) {
+      e.preventDefault();
+      var text = e.target.text.value;
+
+      Countries.insert({
+        text: text,
+        createdAt: new Date() // current time
+      });
+ 
+      e.target.text.value = "";
+
+      console.log(text)
+      Meteor.call('getDiseases', text, function(error, results) {
+        if (error) {
+          console.log("error: " + error);
+        } 
+
+        console.log(results);
+        Session.set("diseases", results);
+
+      });
+    }
+  });
+
+  Template.countryName.events({
+    // temporary.
+    "click .delete": function () {
+      Countries.remove(this._id);
+    }
+  });
+
+  // Meteor.call('getDiseases', function(error, results) {
+  //   if (error) {
+  //     console.log("error: " + error);
+  //   } 
+
+  //   console.log(results);
+  //   Session.set("diseases", results);
+
+  // });
 
   Template.diseases.helpers({
     rant: function() {
@@ -24,11 +65,14 @@ if (Meteor.isServer) {
       var cheerio = Meteor.npmRequire('cheerio');
 
       Meteor.methods({
-        getDiseases: function() {
-          result = Meteor.http.get('http://www.who.int/csr/don/archive/country/aus/en/');
+        getDiseases: function(code) {
+          result = Meteor.http.get('http://www.who.int/csr/don/archive/country/' + code + '/en/');
           $ = cheerio.load(result.content);
           var resp = [];
           var length = $(".col_2-1_1 li a").length;
+          if (length > 10) {
+            length = 10;
+          } 
           for(var i = 1; i <= length; i++) {
             resp.push(
               {
