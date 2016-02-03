@@ -10,5 +10,15 @@
 
 <template name="diseases">
   <h1>Rant!</h1>
-  {{ rant }}
+  <ul>
+    {{ #each rant }}
+      {{> date }}
+    {{ /each }}
+  </ul>
+</template>
+
+<template name="date">
+  <li >
+    {{ date }}, {{ description }}
+  </li>
 </template>

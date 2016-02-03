@@ -27,13 +27,18 @@ if (Meteor.isServer) {
         getDiseases: function() {
           result = Meteor.http.get('http://www.who.int/csr/don/archive/country/aus/en/');
           $ = cheerio.load(result.content);
-          var temp = $(".col_2-1_1 li");
-          var resp = []
-          for(var i = 0; i < resp.length; i++) {
-            resp.push(temp[i].text())
+          var resp = [];
+          var length = $(".col_2-1_1 li a").length;
+          for(var i = 1; i <= length; i++) {
+            resp.push(
+              {
+                date: $(".col_2-1_1 li:nth-child(" + i + ") a").text(),
+                description: $(".col_2-1_1 li:nth-child(" + i + ") span").text(),
+                link: $(".col_2-1_1 li:nth-child(" + i + ") a").attr("href")
+              }
+            );
           }
-          console.log(resp)
-          return resp
+          return resp;
         }
       })
     })
